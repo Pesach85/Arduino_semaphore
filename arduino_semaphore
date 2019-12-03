@@ -1,0 +1,90 @@
+/* This script is for study purpose only not for commercial use. */
+
+const int r1 = 12;       // the input and output arduino ports must be set according to your needs and choiches
+const int g1 = 13;
+const int v1 = 14;
+const int r2 = 18;
+const int g2 = 17;
+const int v2 = 16;
+
+const int pulsante = 4; 
+
+int contatore=0;
+
+long t0 = 10*100;
+long t1 = 30*100;
+long t2 = 30*100;
+long tg = 15*100;
+
+bool rinput;
+
+void setup() {
+  // put your setup code here, to run once:
+
+  for (int i=12; i<=18; i++) {
+    pinMode( i , OUTPUT);
+    }  
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+   read_input();
+
+   stato();
+    
+}
+
+void read_input () {
+                    rinput = digitalRead(pulsante);
+                    if (rinput) {
+                                t0 = 10*100;
+                                t1 = 10*100;
+                                tg = 10*100;
+                                }
+                   }
+
+int stato() {
+
+   if (contatore==0) {
+                      control_lights("100100"); 
+                      delay(t0);
+                      contatore++;
+                      return 1;
+                     }
+   
+   if (contatore==1) {
+                      control_lights("100001"); 
+                      delay(t1);
+                      contatore++;
+                      return 2;
+                     }
+   if (contatore==2) {
+                      control_lights("100010");
+                      delay(tg);
+                      contatore++;
+                      return 3;
+                     }
+   if (contatore==3) {
+                      control_lights("001100");
+                      delay(t2);
+                      contatore++;
+                      return 4;
+                     }
+   if (contatore==4) {
+                      control_lights("010100");
+                      delay(tg);
+                      contatore=1;
+                      return 5;
+                     } 
+             }
+
+void control_lights(String C) {
+                               if (C[0]=='1')digitalWrite(r1,HIGH); else digitalWrite(r1,LOW);
+                               if (C[1]=='1')digitalWrite(g1,HIGH); else digitalWrite(g1,LOW);
+                               if (C[2]=='1')digitalWrite(v1,HIGH); else digitalWrite(v1,LOW);
+                               if (C[3]=='1')digitalWrite(r2,HIGH); else digitalWrite(r2,LOW);
+                               if (C[4]=='1')digitalWrite(g2,HIGH); else digitalWrite(g2,LOW);
+                               if (C[5]=='1')digitalWrite(v2,HIGH); else digitalWrite(v2,LOW);
+                              }
